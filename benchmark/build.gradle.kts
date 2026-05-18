@@ -1,8 +1,12 @@
-// Macrobenchmark module for the Aether app — measures startup, frame timing, etc.
-// Added on feature/poc-test-instrumentation for the native-frameworks POC.
+// Macrobenchmark module for the Aether app — measures startup, frame timing,
+// etc. Added on feature/poc-test-instrumentation for the native-frameworks POC.
 //
 // Run with:
-//   ./gradlew :benchmark:connectedBenchmarkAndroidTest
+//   ./gradlew :benchmark:connectedDebugAndroidTest
+//
+// Targets the app's debug variant for POC simplicity (Macrobenchmark prefers
+// a non-debuggable variant for accurate cold-start measurements; running
+// against debug emits a warning but still produces the JSON report).
 //
 // Reports land at benchmark/build/outputs/connected_android_test_additional_output/.
 
@@ -29,16 +33,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    buildTypes {
-        // benchmark module only emits a test APK; the "release" buildType here
-        // mirrors the app's release config so Macrobenchmark can target it.
-        create("benchmark") {
-            isDebuggable = true
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-        }
     }
 
     targetProjectPath = ":app"
