@@ -42,6 +42,10 @@ class AetherApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // Native-frameworks POC: enable WebView remote-debug & DOM access for Espresso Web in debug builds.
+        if (BuildConfig.DEBUG) {
+            android.webkit.WebView.setWebContentsDebuggingEnabled(true)
+        }
         runtime.initialize()
     }
 

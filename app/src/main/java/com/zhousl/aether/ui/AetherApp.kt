@@ -181,6 +181,8 @@ fun AetherApp(
                     strings = strings,
                     onPrivacyPolicyAccepted = onPrivacyPolicyAccepted,
                 )
+                // Native-frameworks POC: 1dp invisible test-probe overlay (debug-only no-op).
+                com.zhousl.aether.debug.TestProbeOverlay()
             }
         }
     }

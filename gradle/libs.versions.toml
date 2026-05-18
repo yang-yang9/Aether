@@ -19,6 +19,11 @@ shizuku = "13.1.5"
 androidAppProcess = "1.4.3"
 posthogAndroid = "3.43.1"
 posthogAndroidGradlePlugin = "1.1.0"
+androidxTestEspresso = "3.6.1"
+androidxTestExtJunit = "1.2.1"
+androidxTestRules = "1.6.1"
+androidxTestUiautomator = "2.3.0"
+androidxBenchmark = "1.3.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,9 +53,20 @@ shizuku-api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuk
 shizuku-provider = { group = "dev.rikka.shizuku", name = "provider", version.ref = "shizuku" }
 android-app-process = { group = "io.github.iamr0s", name = "AndroidAppProcess", version.ref = "androidAppProcess" }
 posthog-android = { group = "com.posthog", name = "posthog-android", version.ref = "posthogAndroid" }
+# Native-frameworks POC instrumentation (added on feature/poc-test-instrumentation).
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspresso" }
+androidx-test-espresso-web = { group = "androidx.test.espresso", name = "espresso-web", version.ref = "androidxTestEspresso" }
+androidx-test-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "androidxTestEspresso" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxTestUiautomator" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxBenchmark" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 posthog-android = { id = "com.posthog.android", version.ref = "posthogAndroidGradlePlugin" }
+androidx-benchmark = { id = "androidx.benchmark", version.ref = "androidxBenchmark" }

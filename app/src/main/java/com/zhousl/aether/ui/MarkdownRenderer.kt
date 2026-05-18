@@ -2730,6 +2730,17 @@ private class MarkdownHtmlBridge(
             onLinkClick?.invoke(targetUrl)
         }
     }
+
+    /**
+     * Native-frameworks POC test hook. Lets a test-injected WebView call back
+     * into the host with an arbitrary string, which surfaces in
+     * [com.zhousl.aether.debug.TestProbe] for instrumentation assertions.
+     * No-op outside DEBUG builds.
+     */
+    @JavascriptInterface
+    fun updateNativeText(value: String?) {
+        com.zhousl.aether.debug.TestProbe.update(value)
+    }
 }
 
 private fun AnnotatedString.Builder.appendSourceSegment(

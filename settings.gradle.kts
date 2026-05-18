@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Aether"
 include(":app")
+include(":benchmark")

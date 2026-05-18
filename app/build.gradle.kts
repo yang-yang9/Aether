@@ -115,6 +115,16 @@ dependencies {
     testImplementation(libs.junit4)
     testImplementation(libs.squareup.okhttp.mockwebserver)
     testImplementation(libs.json)
+
+    // Native-frameworks POC instrumentation tests (Espresso + Espresso Web + UIAutomator + Compose UI Test).
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.web)
+    androidTestImplementation(libs.androidx.test.espresso.contrib)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }
 
 tasks.withType<PostHogCliExecTask>().configureEach {
