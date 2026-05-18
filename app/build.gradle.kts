@@ -108,6 +108,10 @@ dependencies {
     implementation(libs.shizuku.provider)
     implementation(libs.android.app.process)
     implementation(libs.posthog.android)
+    // Required by androidx.benchmark.macro for cold-start measurements; the
+    // macrobenchmark APK looks up an updated profileinstaller in the target
+    // app at runtime. Without this, runs fail on API 34+ devices.
+    implementation(libs.androidx.profileinstaller)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

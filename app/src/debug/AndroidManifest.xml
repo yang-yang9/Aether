@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+        Native-frameworks POC test fixtures. Declared in `debug/` (not in
+        `androidTest/`) so the activities live in the MAIN app's APK (with
+        applicationId com.baimoqilin.aether), reachable from the
+        instrumentation's targetContext via ActivityScenario / ActivityScenarioRule.
+
+        Putting them under androidTest/ would route them to the test APK's
+        process (com.baimoqilin.aether.test), which Intent.startActivitySync
+        rejects when called from the target process — that's the
+        "Intent ... resolved to different process" failure we hit with
+        BridgeIntegrationTest / WebViewEspressoWebTest.
+
+        These activities are excluded from release builds (debug-only source set).
+    -->
+    <application>
+        <activity
+            android:name="com.zhousl.aether.test.WebViewTestActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.zhousl.aether.test.BridgeWebViewTestActivity"
+            android:exported="false" />
+    </application>
+</manifest>

@@ -28,6 +28,10 @@ android {
         // androidx.benchmark gradle plugin (and its custom runner) is only
         // for Microbenchmark on com.android.library modules.
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // POC: target the app's debug variant. Macrobenchmark would normally
+        // refuse on grounds of accuracy (DEBUGGABLE) — we suppress that
+        // single error class so the JSON report still gets emitted.
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "DEBUGGABLE"
     }
 
     compileOptions {

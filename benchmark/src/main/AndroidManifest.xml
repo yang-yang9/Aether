@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Macrobenchmark needs to read system tracing data and read other apps' processes. -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="29" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Macrobenchmark uses `GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE)`
+         internally to write benchmark traces. The maxSdkVersion=29 limit makes
+         the declaration absent on API 30+ → grant fails with
+         "Failed to grant permissions". Following the official sample we declare
+         it unconditionally and silence the ScopedStorage lint. -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 </manifest>

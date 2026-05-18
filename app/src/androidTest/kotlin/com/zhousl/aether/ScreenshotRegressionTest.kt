@@ -4,11 +4,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.onFirst
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -41,6 +45,11 @@ class ScreenshotRegressionTest {
 
     @Test
     fun welcomeScreenMatchesBaseline() {
+        // Dismiss POST_NOTIFICATIONS dialog if present — its Compose-wrapped
+        // overlay otherwise becomes a second isRoot() node and confuses
+        // captureToImage(). See Phase 2's NativeBasicTest for the same handler.
+        dismissNotificationPermissionIfPresent()
+
         // Wait for onboarding step 1 to be visible.
         composeRule.waitUntil(timeoutMillis = 10_000) {
             listOf("Welcome to Aether", "欢迎使用 Aether").any {
@@ -49,7 +58,11 @@ class ScreenshotRegressionTest {
         }
         composeRule.waitForIdle()
 
-        val image = composeRule.onRoot().captureToImage().asAndroidBitmap()
+        // Use onAllNodes(isRoot()).onFirst() rather than onRoot() because some
+        // devices / Android versions surface multiple roots (e.g., a system
+        // overlay window for gesture nav alongside the activity's Compose
+        // root). onRoot() asserts uniqueness and fails in that case.
+        val image = composeRule.onAllNodes(isRoot()).onFirst().captureToImage().asAndroidBitmap()
         val ctx = InstrumentationRegistry.getInstrumentation().targetContext
         val deviceFp = ctx.deviceFingerprint()
 
@@ -76,6 +89,17 @@ class ScreenshotRegressionTest {
                 "Re-run with UPDATE_BASELINE=1 if the change is intentional.",
             ratio < 0.02f,
         )
+    }
+
+    private fun dismissNotificationPermissionIfPresent() {
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.wait(Until.hasObject(By.pkg("com.android.permissioncontroller")), 3_000)
+        val denyLabels = listOf("Don’t allow", "Don't allow", "Deny", "不允许", "拒绝")
+        for (label in denyLabels) {
+            val obj = device.findObject(By.text(label)) ?: continue
+            obj.click()
+            return
+        }
     }
 
     private fun isUpdateBaselineRequested(): Boolean {
